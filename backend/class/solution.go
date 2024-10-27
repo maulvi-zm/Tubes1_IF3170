@@ -1,9 +1,9 @@
 package class
 
 type SolutionItem struct {
+	state     []int
 	iteration int
 	score     int
-	state    []int
 }
 
 type Solution struct {
