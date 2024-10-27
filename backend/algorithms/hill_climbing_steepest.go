@@ -1,11 +1,15 @@
 package algorithms
 
-func HillClimbingSteepest(initialState Cube) Solution {
+import (
+	"be/class"
+)
+
+func HillClimbingSteepest(initialState class.Cube) class.Solution {
 	currentCube := initialState
 	currentScore := currentCube.GetCurrentScore()
 
-	res := NewSolution()
-	res.AddSolutionItem(0, currentScore, currentCube.currentState)
+	res := class.NewSolution()
+	res.AddSolutionItem(0, currentScore, currentCube.GetCurrentState())
 
 	i := 1
 
@@ -17,7 +21,7 @@ func HillClimbingSteepest(initialState Cube) Solution {
 		if bestSuccessorScore < currentScore {
 			currentCube = *bestSuccessor.CopyCube()
 			currentScore = bestSuccessorScore
-			res.AddSolutionItem(i, currentScore, currentCube.currentState)
+			res.AddSolutionItem(i, currentScore, currentCube.GetCurrentState())
 			i++
 		} else {
 			break

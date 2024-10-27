@@ -1,20 +1,21 @@
 package algorithms
 
+import (
+	"be/class"
+)
+
 // Fungsi Stochastic Hill Climbing
-func stochasticHillClimbing(initialState Cube, maxIter int) Solution {
+func stochasticHillClimbing(initialState class.Cube, maxIter int) class.Solution {
 	currentCube := initialState
 	currentScore := currentCube.GetCurrentScore()
 
-	res := NewSolution()
-	res.AddSolutionItem(0, currentScore, currentCube.currentState)
+	res := class.NewSolution()
+	res.AddSolutionItem(0, currentScore, currentCube.GetCurrentState())
 
 	i := 1
 
 	// Iterasi sampai mencapai kondisi optimal atau maksimum iterasi
-	for {
-		if i+1 == maxIter {
-			break
-		}
+	for i+1 != maxIter {
 
 		randomSuccessor := currentCube.GetRandomSuccessor()
 		randomSuccessorScore := randomSuccessor.GetCurrentScore()
@@ -22,7 +23,7 @@ func stochasticHillClimbing(initialState Cube, maxIter int) Solution {
 		// Jika tetangga acak lebih baik, pindah ke tetangga tersebut
 		currentCube = *randomSuccessor.CopyCube()
 		currentScore = randomSuccessorScore
-		res.AddSolutionItem(i, currentScore, currentCube.currentState)
+		res.AddSolutionItem(i, currentScore, currentCube.GetCurrentState())
 		i++
 	}
 

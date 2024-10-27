@@ -1,12 +1,16 @@
 package algorithms
 
+import (
+	"be/class"
+)
+
 // Fungsi Hill Climbing Sideways Move
-func HillClimbingSideways(initialState Cube, maxIter int) Solution {
+func HillClimbingSideways(initialState class.Cube, maxIter int) class.Solution {
 	currentCube := initialState
 	currentScore := currentCube.GetCurrentScore()
 
-	res := NewSolution()
-	res.AddSolutionItem(0, currentScore, currentCube.currentState)
+	res := class.NewSolution()
+	res.AddSolutionItem(0, currentScore, currentCube.GetCurrentState())
 
 	i := 1
 
@@ -28,7 +32,7 @@ func HillClimbingSideways(initialState Cube, maxIter int) Solution {
 		if bestSuccessorScore <= currentScore {
 			currentCube = *bestSuccessor.CopyCube()
 			currentScore = bestSuccessorScore
-			res.AddSolutionItem(i, currentScore, currentCube.currentState)
+			res.AddSolutionItem(i, currentScore, currentCube.GetCurrentState())
 
 			i++
 
