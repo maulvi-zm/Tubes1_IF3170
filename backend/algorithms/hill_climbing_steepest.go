@@ -4,8 +4,8 @@ import (
 	"be/class"
 )
 
-func HillClimbingSteepest(initialState class.Cube) class.Solution {
-	currentCube := initialState
+func HillClimbingSteepest() class.Solution {
+	currentCube := class.NewCube(5)
 	currentScore := currentCube.GetCurrentScore()
 
 	res := class.NewSolution()
@@ -19,7 +19,7 @@ func HillClimbingSteepest(initialState class.Cube) class.Solution {
 		bestSuccessorScore := bestSuccessor.GetCurrentScore()
 
 		if bestSuccessorScore < currentScore {
-			currentCube = *bestSuccessor.CopyCube()
+			currentCube = bestSuccessor.CopyCube()
 			currentScore = bestSuccessorScore
 			res.AddSolutionItem(i, currentScore, currentCube.GetCurrentState())
 			i++

@@ -5,8 +5,8 @@ import (
 )
 
 // Fungsi Hill Climbing Sideways Move
-func HillClimbingSideways(initialState class.Cube, maxIter int) class.Solution {
-	currentCube := initialState
+func HillClimbingSideways(maxIter int) class.Solution {
+	currentCube := class.NewCube(5)
 	currentScore := currentCube.GetCurrentScore()
 
 	res := class.NewSolution()
@@ -17,10 +17,7 @@ func HillClimbingSideways(initialState class.Cube, maxIter int) class.Solution {
 	maxCheck := 0
 
 	// Iterasi sampai mencapai kondisi optimal atau maksimum iterasi
-	for {
-		if maxCheck == maxIter {
-			break
-		}
+	for maxCheck != maxIter {
 
 		bestSuccessor := currentCube.GetBestSuccessor()
 		bestSuccessorScore := bestSuccessor.GetCurrentScore()
@@ -30,7 +27,7 @@ func HillClimbingSideways(initialState class.Cube, maxIter int) class.Solution {
 		}
 
 		if bestSuccessorScore <= currentScore {
-			currentCube = *bestSuccessor.CopyCube()
+			currentCube = bestSuccessor.CopyCube()
 			currentScore = bestSuccessorScore
 			res.AddSolutionItem(i, currentScore, currentCube.GetCurrentState())
 

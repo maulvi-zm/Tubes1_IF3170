@@ -1,6 +1,8 @@
 package algorithms
 
-func GeneticAlgorithm() string {
-    // Example pseudo-algorithm logic
-    return "Genetic Algorithm completed."
+import "strconv"
+
+func GeneticAlgorithm(populationNum int, iteration int) string {
+	return "Genetic Algorithm completed. Population: " + strconv.Itoa(populationNum) + ", Iteration: " + strconv.Itoa(iteration)
 }
+
