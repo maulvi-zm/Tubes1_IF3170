@@ -83,5 +83,17 @@ func GeneticAlgorithmHandler(w http.ResponseWriter, r *http.Request) {
 
 func SimulatedAnnealingHandler(w http.ResponseWriter, r *http.Request) {
 	result := algorithms.SimulatedAnnealing()
-	fmt.Fprintf(w, "Simulated Annealing Result: %v", result)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	jsonData, err := result.ConvertToJson()
+	if err != nil {
+		http.Error(w, "Unable to convert solution to JSON", http.StatusInternalServerError)
+		return
+	}
+
+	// print the json size in kb
+	fmt.Println("JSON size in KB: ", float64(len(jsonData))/1000)
+
+	w.Write([]byte(jsonData))
 }
