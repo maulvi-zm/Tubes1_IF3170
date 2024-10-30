@@ -62,10 +62,12 @@ func (c *Cube) SetRandomStartState() {
 		c.currentState[i], c.currentState[j] = c.currentState[j], c.currentState[i]
 	})
 
+	// Call the function for the first time
 	c.currentScore = c.CalculateCurrentScore()
 }
 
 func (c *Cube) SwitchState(i, j int) {
+	// Recalculate the score because the state has changed
 	c.currentState[i], c.currentState[j] = c.currentState[j], c.currentState[i]
 	c.currentScore = c.CalculateCurrentScore()
 }
@@ -81,12 +83,14 @@ func (c *Cube) GetRandomSuccessor() *Cube {
 	newCube := Cube{blockCount: c.blockCount, currentState: make([]int, c.blockCount), currentScore: c.currentScore, sideLength: c.sideLength}
 	copy(newCube.currentState, c.currentState)
 
+	// Swith and trigger score recalculation
 	newCube.SwitchState(i, j)
 
 	return &newCube
 }
 
 // Fungsi untuk menghitung skor magic cube
+// It should not called directly, because it already called for every state change
 func (c *Cube) CalculateCurrentScore() int {
 	n := c.GetSideLength()
 	cube := c.GetCurrentState()

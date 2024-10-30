@@ -92,7 +92,7 @@ func SimulatedAnnealingHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// print the json size in kb
+	// print the json size in kb to check if it's too big
 	fmt.Println("JSON size in KB: ", float64(len(jsonData))/1000)
 
 	w.Write([]byte(jsonData))
