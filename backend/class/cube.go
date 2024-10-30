@@ -78,7 +78,7 @@ func (c *Cube) GetRandomSuccessor() *Cube {
 		j = rand.Intn(c.blockCount)
 	}
 
-	newCube := Cube{blockCount: c.blockCount, currentState: make([]int, c.blockCount)}
+	newCube := Cube{blockCount: c.blockCount, currentState: make([]int, c.blockCount), currentScore: c.currentScore, sideLength: c.sideLength}
 	copy(newCube.currentState, c.currentState)
 
 	newCube.SwitchState(i, j)
@@ -163,7 +163,7 @@ func (c *Cube) CalculateCurrentScore() int {
 		totalScore += int(math.Abs(float64(sum4 - magicNum)))
 	}
 
-	return totalScore
+	return -totalScore
 }
 
 func (c *Cube) GetBestSuccessor() *Cube {
