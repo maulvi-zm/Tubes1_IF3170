@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import Draggable from "react-draggable";
+import { Solution } from "@/types/solution";
 
 export default function AlgorithmForm() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function AlgorithmForm() {
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("Submit");
     e.preventDefault();
     let endpoint = "";
     let body: Record<string, unknown> = {};
@@ -55,13 +57,13 @@ export default function AlgorithmForm() {
     }
 
     try {
-      const response = await fetch(endpoint, {
+      const response = await fetch("http://localhost:8080" + endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      const data = await response.json();
-      navigate(`/results?data=${JSON.stringify(data)}`);
+      const data: Solution = await response.json();
+      navigate(`/results`, { state: { data } });
     } catch (error) {
       console.error("Error:", error);
     }
@@ -149,7 +151,9 @@ export default function AlgorithmForm() {
           </>
         )}
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className="z-40">
+          Submit
+        </Button>
       </form>
     </Draggable>
   );

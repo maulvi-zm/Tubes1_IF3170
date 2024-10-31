@@ -9,9 +9,16 @@ function App() {
     <Router>
       <div className="w-full">
         <div className="re top-0 left-0"></div>
-        <NumberedCube />
         <Routes>
-          <Route path="/" element={<AlgorithmForm />} />
+          <Route
+            path="/"
+            element={
+              <>
+                <NumberedCube />
+                <AlgorithmForm />
+              </>
+            }
+          />
           <Route path="/results" element={<ResultsPage />} />
         </Routes>
       </div>

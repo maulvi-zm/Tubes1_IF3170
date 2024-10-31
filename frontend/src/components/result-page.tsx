@@ -1,18 +1,33 @@
-import { useSearchParams } from "react-router-dom";
+"use client";
+
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Solution } from "@/types/solution";
+import { Link, useLocation } from "react-router-dom";
+import Chart from "./chart";
+
 export default function ResultsPage() {
-  const [searchParams] = useSearchParams();
-  const data = searchParams.get("data");
+  const location = useLocation();
+  const data: Solution = location.state?.data;
+
+  // Prepare data for the chart
+  const chartData = data?.solutions.map((item) => ({
+    iteration: item.iteration,
+    score: item.score,
+  }));
 
   return (
-    <div className="max-w-2xl mx-auto mt-8 p-4">
-      <h1 className="text-2xl font-bold mb-4">Results</h1>
-      <pre className="bg-gray-100 p-4 rounded-md overflow-auto">
-        {data ? JSON.stringify(JSON.parse(data), null, 2) : "No data available"}
-      </pre>
+    <div className="flex flex-col justify-center mt-8 p-4 w-screen">
+      {data && (
+        <Chart
+          {...{
+            label: "Score",
+            chartData,
+            title: "Score changes over iterations",
+          }}
+        />
+      )}
       <Link to="/">
-        <Button className="mt-4">Back to Form</Button>
+        <Button>Back to Form</Button>
       </Link>
     </div>
   );
