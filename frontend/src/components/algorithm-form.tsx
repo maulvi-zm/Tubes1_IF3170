@@ -57,6 +57,7 @@ export default function AlgorithmForm() {
     }
 
     try {
+      console.log(JSON.stringify(body));
       const response = await fetch("http://localhost:8080" + endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
