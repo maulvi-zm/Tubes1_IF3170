@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -14,7 +13,6 @@ import Draggable from "react-draggable";
 import { Solution } from "@/types/solution";
 
 export default function AlgorithmForm() {
-  const navigate = useNavigate();
   const [algorithm, setAlgorithm] = useState("");
   const [params, setParams] = useState({
     maxSidewayMove: "",
@@ -24,7 +22,6 @@ export default function AlgorithmForm() {
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log("Submit");
     e.preventDefault();
     let endpoint = "";
     let body: Record<string, unknown> = {};
@@ -63,7 +60,12 @@ export default function AlgorithmForm() {
         body: JSON.stringify(body),
       });
       const data: Solution = await response.json();
-      navigate(`/results`, { state: { data } });
+      localStorage.setItem("solution", JSON.stringify(data));
+      window.open(
+        "http://localhost:3000/results",
+        "_blank",
+        "noopener,noreferrer",
+      );
     } catch (error) {
       console.error("Error:", error);
     }
