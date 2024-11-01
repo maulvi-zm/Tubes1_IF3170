@@ -16,23 +16,34 @@ func HillClimbingSteepestHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func HillClimbingStochasticHandler(w http.ResponseWriter, r *http.Request) {
-	result := algorithms.HillClimbingStochastic()
-	fmt.Fprintf(w, "Hill Climbing (Stochastic) Result: %v", result)
-}
+	var data struct {
+		MaxStochasticMove int `json:"maxStochasticMove"`
+	}
 
-func HillClimbingSidewayMoveHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
+	err := json.NewDecoder(r.Body).Decode(&data)
 	if err != nil {
 		http.Error(w, "Unable to parse form data", http.StatusBadRequest)
 		return
 	}
 
-	maxSidewayMoveStr := r.FormValue("maxSidewayMove")
-	maxSidewayMove, err := strconv.Atoi(maxSidewayMoveStr)
+	maxStochasticMove := data.MaxStochasticMove
+	result := algorithms.HillClimbingStochastic(maxStochasticMove)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(result)
+}
+
+func HillClimbingSidewayMoveHandler(w http.ResponseWriter, r *http.Request) {
+	var data struct {
+		MaxSidewayMove int `json:"maxSidewayMove"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&data)
 	if err != nil {
-		http.Error(w, "Invalid maxSidewayMove value", http.StatusBadRequest)
+		http.Error(w, "Unable to parse form data", http.StatusBadRequest)
 		return
 	}
+
+	maxSidewayMove := data.MaxSidewayMove
 
 	result := algorithms.HillClimbingSideways(maxSidewayMove)
 
