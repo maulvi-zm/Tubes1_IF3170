@@ -184,7 +184,7 @@ func (c *Cube) GetBestSuccessor() *Cube {
 				return newCube
 			}
 
-			if newCube.GetCurrentScore() < bestScore {
+			if newCube.GetCurrentScore() > bestScore {
 				bestCube = newCube
 				bestScore = newCube.GetCurrentScore()
 			}

@@ -41,18 +41,16 @@ func HillClimbingSidewayMoveHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func HillClimbingRandomRestartHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
+	var data struct {
+		MaxRandomRestart int `json:"maxRandomRestart"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&data)
 	if err != nil {
-		http.Error(w, "Unable to parse form data", http.StatusBadRequest)
+		http.Error(w, "Unable to parse JSON data", http.StatusBadRequest)
 		return
 	}
 
-	maxRestartStr := r.FormValue("maxRestart")
-	maxRestart, err := strconv.Atoi(maxRestartStr)
-	if err != nil {
-		http.Error(w, "Invalid maxRestart value", http.StatusBadRequest)
-		return
-	}
+	maxRestart := data.MaxRandomRestart
 
 	result := algorithms.HillClimbingRandomRestart(maxRestart)
 	w.Header().Set("Content-Type", "application/json")
