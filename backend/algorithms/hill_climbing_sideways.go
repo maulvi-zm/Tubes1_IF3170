@@ -7,6 +7,7 @@ import (
 // Fungsi Hill Climbing Sideways Move
 func HillClimbingSideways(maxIter int) class.Solution {
 	currentCube := class.NewCube(5)
+	currentCube.SetRandomStartState()
 	currentScore := currentCube.GetCurrentScore()
 
 	res := class.NewSolution()
@@ -26,7 +27,7 @@ func HillClimbingSideways(maxIter int) class.Solution {
 			maxCheck++
 		}
 
-		if bestSuccessorScore <= currentScore {
+		if bestSuccessorScore >= currentScore {
 			currentCube = bestSuccessor.CopyCube()
 			currentScore = bestSuccessorScore
 			res.AddSolutionItem(i, currentScore, currentCube.GetCurrentState())

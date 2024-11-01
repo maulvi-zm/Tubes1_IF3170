@@ -6,6 +6,7 @@ import (
 
 func HillClimbingSteepest() class.Solution {
 	currentCube := class.NewCube(5)
+	currentCube.SetRandomStartState()
 	currentScore := currentCube.GetCurrentScore()
 
 	res := class.NewSolution()
@@ -13,12 +14,11 @@ func HillClimbingSteepest() class.Solution {
 
 	i := 1
 
-	// Iterasi sampai mencapai kondisi optimal atau maksimum iterasi
 	for {
 		bestSuccessor := currentCube.GetBestSuccessor()
 		bestSuccessorScore := bestSuccessor.GetCurrentScore()
 
-		if bestSuccessorScore < currentScore {
+		if bestSuccessorScore > currentScore {
 			currentCube = bestSuccessor.CopyCube()
 			currentScore = bestSuccessorScore
 			res.AddSolutionItem(i, currentScore, currentCube.GetCurrentState())
