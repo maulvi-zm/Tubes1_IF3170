@@ -23,9 +23,7 @@ func getProbability(deltaE int, temperature float64) float64 {
 	return math.Exp(floatDeltaE / temperature)
 }
 
-func isAcceptance(deltaE int, temperature float64) bool {
-	floatDeltaE := float64(deltaE)
-	probability := getProbability(int(floatDeltaE), temperature)
+func isAcceptance(probability float64) bool {
 	return probability > threshold
 }
 
@@ -36,6 +34,7 @@ func SimulatedAnnealing() class.Solution {
 
 	fmt.Println("Initial Score: ", currentScore)
 	res := class.NewSolution()
+	res.SetType("Simulated Annealing")
 	res.AddSolutionItem(0, currentScore, currentCube.GetCurrentState())
 
 	i := 1
@@ -52,12 +51,13 @@ func SimulatedAnnealing() class.Solution {
 			break
 		}
 
-		if scoreDifference > 0 || (scoreDifference < 0 && isAcceptance(scoreDifference, currentTemperature)) {
+		probability := getProbability(scoreDifference, currentTemperature)
+		if scoreDifference > 0 || (scoreDifference < 0 && isAcceptance(probability)) {
 			currentCube = successor.CopyCube()
 			currentScore = successorScore
 
 			if i%1000 == 0 {
-				res.AddSolutionItem(i, currentScore, currentCube.GetCurrentState())
+				res.AddSolutionItem(i, currentScore, currentCube.GetCurrentState(), probability)
 				fmt.Println("Iteration: ", i, " Score: ", currentScore)
 			}
 
