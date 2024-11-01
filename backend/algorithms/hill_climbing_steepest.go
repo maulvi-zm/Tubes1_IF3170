@@ -15,7 +15,6 @@ func HillClimbingSteepest() class.Solution {
 	
 	i := 1
 
-	// Iterasi sampai mencapai kondisi optimal atau maksimum iterasi
 	for {
 		bestSuccessor := currentCube.GetBestSuccessor()
 		bestSuccessorScore := bestSuccessor.GetCurrentScore()

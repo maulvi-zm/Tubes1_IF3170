@@ -5,10 +5,10 @@ import (
 )
 
 type SolutionItem struct {
-	State     []int `json:"state"`
-	Iteration int   `json:"iteration"`
-	Score     int   `json:"score"`
-	DeltaE    int   `json:"deltaE"`
+	State       []int   `json:"state"`
+	Iteration   int     `json:"iteration"`
+	Score       int     `json:"score"`
+	Probability float64 `json:"probability"`
 }
 
 type addtitionalInfor struct {
@@ -30,16 +30,16 @@ func addAdditionalInfo(s *Solution, itemName string, itemValue string) {
 	s.AdditionalInfo = append(s.AdditionalInfo, addtitionalInfor{ItemName: itemName, ItemValue: itemValue})
 }
 
-func setType(s *Solution, solutionType string) {
+func (s *Solution) SetType(solutionType string) {
 	s.Type = solutionType
 }
 
-func (s *Solution) AddSolutionItem(iteration int, score int, state []int, deltaE ...int) {
-	defaultDeltaE := 0
-	if len(deltaE) > 0 {
-		defaultDeltaE = deltaE[0]
+func (s *Solution) AddSolutionItem(iteration int, score int, state []int, probability ...float64) {
+	defaultProbability := 0.0
+	if len(probability) > 0 {
+		defaultProbability = probability[0]
 	}
-	s.Solution = append(s.Solution, SolutionItem{Iteration: iteration, Score: score, State: state, DeltaE: defaultDeltaE})
+	s.Solution = append(s.Solution, SolutionItem{Iteration: iteration, Score: score, State: state, Probability: defaultProbability})
 }
 
 func (s *Solution) GetSolution() []SolutionItem {
