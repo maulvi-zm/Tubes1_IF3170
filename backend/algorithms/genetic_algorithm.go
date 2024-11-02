@@ -4,7 +4,6 @@ package algorithms
 
 import (
 	"be/class"
-	"fmt"
 	"math"
 	"time"
 
@@ -21,7 +20,7 @@ func WeightedRandom(max int) int {
 	randomFloat := rand.Float64()
 
 	// Subtract from 1 to flip the distribution, then apply power to skew towards the higher end
-	skewed := 1 - math.Pow(randomFloat, 3.0) // Adjust exponent for more or less skew (higher = more weight towards max)
+	skewed := 1 - math.Pow(randomFloat, 1.5) // Adjust exponent for more or less skew (higher = more weight towards max)
 
 	// Scale to range 0 to max
 	return int(skewed * float64(max))
@@ -67,7 +66,7 @@ func Crossover(HigherHalfParent, LowerHalfParent *class.Cube) *class.Cube {
 			HPIndex := FindNumberInCube(HigherHalfParent, splitIndex, LPValue)
 
 			// If it is, swap i with HPIndex. Else, set i to HPValue
-			if HPIndex != -1 {
+			if HPIndex != -1 && !swappedIndices[HPIndex] {
 				child.SetSmallCubeValue(i, LPValue)
 				child.SetSmallCubeValue(HPIndex, HPValue)
 				swappedIndices[i] = true
@@ -78,7 +77,26 @@ func Crossover(HigherHalfParent, LowerHalfParent *class.Cube) *class.Cube {
 		}
 	}
 
+	child.SetCurrentScore()
 	return child
+}
+
+func Mutate(cube *class.Cube) *class.Cube {
+	// Get two random indices to swap
+	index1 := rand.Intn(125)
+	index2 := rand.Intn(125)
+
+	// Determine if mutation will occur
+	// Mutation rate is 0.3
+	rand.Seed(time.Now().UnixNano())
+	mutationRate := rand.Float64()
+
+	if mutationRate < 0.3 {
+		// Swap the values at the two indices
+		cube.SwitchState(index1, index2)
+	}
+
+	return cube
 }
 
 // //////////////////////////// //
@@ -195,47 +213,58 @@ func (p *Population) GeneratePopulation() {
 	p.SetMaxFitness(maxFitness)
 }
 
-// func (p *Population) BreedPopulation() *Population {
-// 	newPopulation := NewPopulation(p.GetPopulationNum())
+func (p *Population) BreedPopulation() *Population {
+	newPopulation := NewPopulation(p.GetPopulationNum())
+	SumScore := 0
 
-// 	for i := 0; i < p.GetPopulationNum(); i++ {
-// 		parent1 := p.GetWeightedRandomCube()
-// 		parent2 := p.GetWeightedRandomCube()
+	for i := 0; i < p.GetPopulationNum(); i++ {
+		parent1 := p.GetWeightedRandomCube()
+		parent2 := p.GetWeightedRandomCube()
 
-// 		child := parent1.Crossover(parent2)
-// 		child.Mutate()
+		child := Crossover(parent1, parent2)
+		child = Mutate(child)
 
-// 		newPopulation.Cubes[i] = child
-// 	}
+		newPopulation.Cubes[i] = child
 
-// 	return newPopulation
-// }
+		// Sum scores to get average
+		Score := child.GetCurrentScore()
+		SumScore += Score
+
+		// Set best cube of population
+		if Score > newPopulation.GetBestCube().GetCurrentScore() {
+			newPopulation.SetBestCubeIndex(i)
+		}
+
+		// Set min score of population
+		if Score < newPopulation.GetMinScore() {
+			newPopulation.SetMinScore(Score)
+		}
+	}
+
+	// Set average score of population
+	newPopulation.SetAvgScore(SumScore / newPopulation.GetPopulationNum())
+
+	// Set max fitness of population
+	maxFitness := newPopulation.GetBestCube().GetCurrentScore() - newPopulation.GetMinScore()
+	newPopulation.SetMaxFitness(maxFitness)
+
+	return newPopulation
+}
 
 func GeneticAlgorithm(populationNum int, iteration int) class.Solution {
-	HigherHalfParent := class.NewCube(5)
-	LowerHalfParent := class.NewCube(5)
+	population := NewPopulation(populationNum)
+	population.GeneratePopulation()
 
-	HigherHalfParent.SetRandomStartState()
-	LowerHalfParent.SetRandomStartState()
-
-	// Solution
 	res := class.NewSolution()
 	res.SetType("Genetic Algorithm")
-	res.AddSolutionItem(0, 0, HigherHalfParent.GetCurrentState())
+	res.AddSolutionItem(0, population.GetBestCube().GetCurrentScore(), population.GetBestCube().GetCurrentState())
 
-	// Print parents
-	fmt.Println("Higher Half Parent:")
-	for i := 0; i < 27; i++ {
-		fmt.Print(HigherHalfParent.GetSmallCubeValue(i), " ")
+	for i := 1; i <= iteration; i++ {
+		newPopulation := population.BreedPopulation()
+
+		population = newPopulation
+		res.AddSolutionItem(i, population.GetBestCube().GetCurrentScore(), population.GetBestCube().GetCurrentState())
 	}
-
-	fmt.Println("\nLower Half Parent:")
-	for i := 0; i < 27; i++ {
-		fmt.Print(LowerHalfParent.GetSmallCubeValue(i), " ")
-	}
-
-	// child := Crossover(HigherHalfParent, LowerHalfParent)
-	// child.PrintCube()
 
 	return *res
 }

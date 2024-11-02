@@ -3,7 +3,6 @@ package handlers
 import (
 	"be/algorithms"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	// "strconv"
 )
@@ -81,8 +80,6 @@ func GeneticAlgorithmHandler(w http.ResponseWriter, r *http.Request) {
 
 	iteration := data.Iteration
 	populationNum := data.PopulationNum
-	fmt.Println("Population Num: ", populationNum)
-	fmt.Println("Iteration: ", iteration)
 
 	result := algorithms.GeneticAlgorithm(populationNum, iteration)
 	w.Header().Set("Content-Type", "application/json")

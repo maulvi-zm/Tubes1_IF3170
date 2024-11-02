@@ -55,6 +55,10 @@ func (c *Cube) SetCurrentState(currentState []int) {
 	c.currentScore = c.CalculateCurrentScore()
 }
 
+func (c *Cube) SetCurrentScore() {
+	c.currentScore = c.CalculateCurrentScore()
+}
+
 func (c *Cube) SetSmallCubeValue(index, value int) {
 	c.currentState[index] = value
 }
