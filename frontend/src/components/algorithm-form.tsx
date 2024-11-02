@@ -15,6 +15,7 @@ import { Solution } from "@/types/solution";
 export default function AlgorithmForm() {
   const [algorithm, setAlgorithm] = useState("");
   const [params, setParams] = useState({
+    maxStochasticMove: "",
     maxSidewayMove: "",
     maxRandomRestart: "",
     populationNum: "",
@@ -32,6 +33,7 @@ export default function AlgorithmForm() {
         break;
       case "stochastic":
         endpoint = "/hill-climbing/stochastic";
+        body = {maxStochasticMove: parseInt(params.maxStochasticMove) };
         break;
       case "sidewaymove":
         endpoint = "/hill-climbing/sidewaymove";
@@ -90,17 +92,27 @@ export default function AlgorithmForm() {
             <SelectContent>
               <SelectItem value="steepest">Hill Climbing Steepest</SelectItem>
               <SelectItem value="sidewaymove">Hill Climbing Sideway</SelectItem>
-              <SelectItem value="stochastic">
-                Hill Climbing Stochastic
-              </SelectItem>
-              <SelectItem value="randomrestart">
-                Hill Climbing Random Restart
-              </SelectItem>
+              <SelectItem value="stochastic">Hill Climbing Stochastic</SelectItem>
+              <SelectItem value="randomrestart">Hill Climbing Random Restart</SelectItem>
               <SelectItem value="genetic">Genetic Algorithm</SelectItem>
               <SelectItem value="simulated">Simulated Annealing</SelectItem>
             </SelectContent>
           </Select>
         </div>
+
+        {algorithm === "stochastic" && (
+          <div>
+            <Label htmlFor="maxStochasticMove">Max Stochastic Move</Label>
+            <Input
+              id="maxStochasticMove"
+              type="number"
+              value={params.maxStochasticMove}
+              onChange={(e) =>
+                setParams({ ...params, maxStochasticMove: e.target.value })
+              }
+            />
+          </div>
+        )}
 
         {algorithm === "sidewaymove" && (
           <div>

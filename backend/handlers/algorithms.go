@@ -3,9 +3,8 @@ package handlers
 import (
 	"be/algorithms"
 	"encoding/json"
-	"fmt"
 	"net/http"
-	"strconv"
+	// "strconv"
 )
 
 func HillClimbingSteepestHandler(w http.ResponseWriter, r *http.Request) {
@@ -16,23 +15,34 @@ func HillClimbingSteepestHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func HillClimbingStochasticHandler(w http.ResponseWriter, r *http.Request) {
-	result := algorithms.HillClimbingStochastic()
-	fmt.Fprintf(w, "Hill Climbing (Stochastic) Result: %v", result)
-}
+	var data struct {
+		MaxStochasticMove int `json:"maxStochasticMove"`
+	}
 
-func HillClimbingSidewayMoveHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
+	err := json.NewDecoder(r.Body).Decode(&data)
 	if err != nil {
 		http.Error(w, "Unable to parse form data", http.StatusBadRequest)
 		return
 	}
 
-	maxSidewayMoveStr := r.FormValue("maxSidewayMove")
-	maxSidewayMove, err := strconv.Atoi(maxSidewayMoveStr)
+	maxStochasticMove := data.MaxStochasticMove
+	result := algorithms.HillClimbingStochastic(maxStochasticMove)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(result)
+}
+
+func HillClimbingSidewayMoveHandler(w http.ResponseWriter, r *http.Request) {
+	var data struct {
+		MaxSidewayMove int `json:"maxSidewayMove"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&data)
 	if err != nil {
-		http.Error(w, "Invalid maxSidewayMove value", http.StatusBadRequest)
+		http.Error(w, "Unable to parse form data", http.StatusBadRequest)
 		return
 	}
+
+	maxSidewayMove := data.MaxSidewayMove
 
 	result := algorithms.HillClimbingSideways(maxSidewayMove)
 
@@ -58,40 +68,36 @@ func HillClimbingRandomRestartHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GeneticAlgorithmHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
+	var data struct {
+		Iteration     int `json:"iteration"`
+		PopulationNum int `json:"populationNum"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&data)
 	if err != nil {
-		http.Error(w, "Unable to parse form data", http.StatusBadRequest)
+		http.Error(w, "Unable to parse JSON data", http.StatusBadRequest)
+		return
 	}
 
-	populationNumStr := r.FormValue("populationNum")
-	populationNum, err := strconv.Atoi(populationNumStr)
-	if err != nil {
-		http.Error(w, "Invalid populationNum value", http.StatusBadRequest)
-	}
-
-	iterationStr := r.FormValue("iteration")
-	iteration, err := strconv.Atoi(iterationStr)
-	if err != nil {
-		http.Error(w, "Invalid iteration value", http.StatusBadRequest)
-	}
+	iteration := data.Iteration
+	populationNum := data.PopulationNum
 
 	result := algorithms.GeneticAlgorithm(populationNum, iteration)
-	fmt.Fprintf(w, "Genetic Algorithm Result: %v", result)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(result)
 }
 
 func SimulatedAnnealingHandler(w http.ResponseWriter, r *http.Request) {
 	result := algorithms.SimulatedAnnealing()
 
-	w.Header().Set("Content-Type", "application/json")
-
-	jsonData, err := result.ConvertToJson()
-	if err != nil {
-		http.Error(w, "Unable to convert solution to JSON", http.StatusInternalServerError)
-		return
-	}
+	// jsonData, err := result.ConvertToJson()
+	// if err != nil {
+	// 	http.Error(w, "Unable to convert solution to JSON", http.StatusInternalServerError)
+	// 	return
+	// }
 
 	// print the json size in kb to check if it's too big
-	fmt.Println("JSON size in KB: ", float64(len(jsonData))/1000)
-
-	w.Write([]byte(jsonData))
+	// fmt.Println("JSON size in KB: ", float64(len(jsonData))/1000)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(result)
+	// w.Write([]byte(jsonData))
 }

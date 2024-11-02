@@ -17,7 +17,6 @@ func HillClimbingSideways(maxIter int) class.Solution {
 
 	maxCheck := 0
 
-	// Iterasi sampai mencapai kondisi optimal atau maksimum iterasi
 	for maxCheck != maxIter {
 
 		bestSuccessor := currentCube.GetBestSuccessor()

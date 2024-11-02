@@ -39,6 +39,10 @@ func (c *Cube) GetCurrentScore() int {
 	return c.currentScore
 }
 
+func (c *Cube) GetSmallCubeValue(index int) int {
+	return c.currentState[index]
+}
+
 func (c *Cube) CopyCube() *Cube {
 	newCube := Cube{blockCount: c.blockCount, currentState: make([]int, c.blockCount), currentScore: c.currentScore, sideLength: c.sideLength}
 	copy(newCube.currentState, c.currentState)
@@ -49,6 +53,14 @@ func (c *Cube) SetCurrentState(currentState []int) {
 	c.currentState = currentState
 
 	c.currentScore = c.CalculateCurrentScore()
+}
+
+func (c *Cube) SetCurrentScore() {
+	c.currentScore = c.CalculateCurrentScore()
+}
+
+func (c *Cube) SetSmallCubeValue(index, value int) {
+	c.currentState[index] = value
 }
 
 func (c *Cube) SetRandomStartState() {
