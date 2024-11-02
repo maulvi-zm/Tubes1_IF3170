@@ -12,8 +12,9 @@ type SolutionItem struct {
 }
 
 type addtitionalInfor struct {
-	ItemName  string `json:"itemName"`
-	ItemValue string `json:"itemValue"`
+	// Additional info for genetic algorithm
+	MaxScore int `json:"maxScore"`
+	AvgScore int `json:"avgScore"`
 }
 
 type Solution struct {
@@ -26,8 +27,11 @@ func NewSolution() *Solution {
 	return &Solution{Solution: make([]SolutionItem, 0), Type: "default", AdditionalInfo: make([]addtitionalInfor, 0)}
 }
 
-func addAdditionalInfo(s *Solution, itemName string, itemValue string) {
-	s.AdditionalInfo = append(s.AdditionalInfo, addtitionalInfor{ItemName: itemName, ItemValue: itemValue})
+func (s *Solution) AddAdditionalInfo(maxScore int, avgScore int) {
+	s.AdditionalInfo = append(s.AdditionalInfo, addtitionalInfor{
+		MaxScore: maxScore,
+		AvgScore: avgScore,
+	})
 }
 
 func (s *Solution) SetType(solutionType string) {
