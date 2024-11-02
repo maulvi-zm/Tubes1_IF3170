@@ -58,25 +58,24 @@ func HillClimbingRandomRestartHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GeneticAlgorithmHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
+	var data struct {
+		Iteration     int `json:"iteration"`
+		PopulationNum int `json:"populationNum"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&data)
 	if err != nil {
-		http.Error(w, "Unable to parse form data", http.StatusBadRequest)
+		http.Error(w, "Unable to parse JSON data", http.StatusBadRequest)
+		return
 	}
 
-	populationNumStr := r.FormValue("populationNum")
-	populationNum, err := strconv.Atoi(populationNumStr)
-	if err != nil {
-		http.Error(w, "Invalid populationNum value", http.StatusBadRequest)
-	}
-
-	iterationStr := r.FormValue("iteration")
-	iteration, err := strconv.Atoi(iterationStr)
-	if err != nil {
-		http.Error(w, "Invalid iteration value", http.StatusBadRequest)
-	}
+	iteration := data.Iteration
+	populationNum := data.PopulationNum
+	fmt.Println("Population Num: ", populationNum)
+	fmt.Println("Iteration: ", iteration)
 
 	result := algorithms.GeneticAlgorithm(populationNum, iteration)
-	fmt.Fprintf(w, "Genetic Algorithm Result: %v", result)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(result)
 }
 
 func SimulatedAnnealingHandler(w http.ResponseWriter, r *http.Request) {
