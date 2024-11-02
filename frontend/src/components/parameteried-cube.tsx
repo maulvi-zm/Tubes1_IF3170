@@ -58,13 +58,14 @@ const SmallCube = ({
   );
 };
 
-const NumberedCube = ({
+const ParameterizedCube = ({
   cameraPosition,
+  moveCamera,
   state,
 }: {
   cameraPosition: [number, number, number];
   moveCamera: (axis: "x" | "y" | "z", direction: number) => void;
-  state?: number[];
+  state:number[];
 }) => {
   const [activeAxis, setActiveAxis] = useState<"none" | "x" | "y" | "z">(
     "none",
@@ -123,7 +124,7 @@ const NumberedCube = ({
 
     return [xPos, yPos + baseHeight, zPos] as [number, number, number];
   };
-  const numbers = state || Array.from({ length: 125 }, (_, i) => i + 1);
+
   for (let x = 0; x < 5; x++) {
     for (let y = 0; y < 5; y++) {
       for (let z = 0; z < 5; z++) {
@@ -131,10 +132,9 @@ const NumberedCube = ({
           <SmallCube
             key={`${x}-${y}-${z}`}
             position={getPositionWithOffset(x, y, z)}
-            number={numbers[number-1]}
+            number={state[x+y*5+z*25  ]}
           />,
         );
-        number++
       }
     }
   }
@@ -246,7 +246,7 @@ const NumberedCube = ({
   );
 };
 
-export default function Component() {
+export default function Component({ numbers }: { numbers: number[] }) {
   const [cameraPosition, setCameraPosition] = useState<
     [number, number, number]
   >([10, 10, 10]);
@@ -264,7 +264,7 @@ export default function Component() {
   return (
     <>
       <div className="w-screen h-screen relative">
-        <NumberedCube cameraPosition={cameraPosition} moveCamera={moveCamera} />
+        <ParameterizedCube cameraPosition={cameraPosition} moveCamera={moveCamera} state={numbers}/>
       </div>
     </>
   );

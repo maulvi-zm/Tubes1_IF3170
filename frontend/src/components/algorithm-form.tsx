@@ -62,11 +62,14 @@ export default function AlgorithmForm() {
       });
       const data: Solution = await response.json();
       localStorage.setItem("solution", JSON.stringify(data));
-      window.open(
-        "http://localhost:3000/results",
-        "_blank",
-        "noopener,noreferrer",
-      );
+      const endpoints = [
+         "http://localhost:3000/results",
+          "http://localhost:3000/video"
+      ]
+      endpoints.forEach(endpoint => {
+        window.open(endpoint, "_blank", "noopener,noreferrer");
+      });
+      
     } catch (error) {
       console.error("Error:", error);
     }

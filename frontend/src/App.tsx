@@ -3,7 +3,7 @@ import NumberedCube from "./components/numbered-cube";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AlgorithmForm from "./components/algorithm-form";
 import ResultsPage from "./components/result-page";
-
+import VideoPlayerPage from "./components/videoplayer";
 function App() {
   return (
     <Router>
@@ -20,6 +20,7 @@ function App() {
             }
           />
           <Route path="/results" element={<ResultsPage />} />
+          <Route path="/video" element={<VideoPlayerPage />} />
         </Routes>
       </div>
     </Router>
