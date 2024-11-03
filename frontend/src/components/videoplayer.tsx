@@ -21,6 +21,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ states }) => {
   const [isExportVisible, setIsExportVisible] = useState(false);
   
   useEffect(() => {
+    document.title = `[Video] ${data?.type ?? "Video"}`;
     let interval: NodeJS.Timeout | undefined;
 
     if (isPlaying && data?.solutions.length) {

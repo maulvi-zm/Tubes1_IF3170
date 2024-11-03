@@ -9,13 +9,14 @@ func HillClimbingRandomRestart(maxRestart int) class.Solution {
 	currentCube.SetRandomStartState()
 	currentScore := currentCube.GetCurrentScore()
 	res := class.NewSolution()
+	res.SetType("Random Restart Hill Climbing")
 	res.AddSolutionItem(0, currentScore, currentCube.GetCurrentState())
 
 	i := 1
 
 	maxIter := 0
-	
-	for (maxIter != maxRestart){
+
+	for maxIter != maxRestart {
 		bestSuccessor := currentCube.GetBestSuccessor()
 		bestSuccessorScore := bestSuccessor.GetCurrentScore()
 

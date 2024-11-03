@@ -9,7 +9,9 @@ export default function ResultsPage() {
   useEffect(() => {
     const data = localStorage.getItem("solution");
     if (data) {
-      setData(JSON.parse(data));
+      const parsedData = JSON.parse(data);
+      setData(parsedData);
+      document.title = `[Results] ${parsedData.type}`;
     }
   }, []);
 

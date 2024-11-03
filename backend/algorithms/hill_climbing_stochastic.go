@@ -8,6 +8,7 @@ func HillClimbingStochastic(maxIter int) class.Solution {
 	currentScore := currentCube.GetCurrentScore()
 
 	res := class.NewSolution()
+	res.SetType("Stochastic Hill Climbing")
 	res.AddSolutionItem(0, currentScore, currentCube.GetCurrentState())
 
 	i := 1

@@ -2,7 +2,6 @@ package algorithms
 
 import (
 	"be/class"
-
 )
 
 func HillClimbingSteepest() class.Solution {
@@ -11,8 +10,9 @@ func HillClimbingSteepest() class.Solution {
 	currentScore := currentCube.GetCurrentScore()
 
 	res := class.NewSolution()
+	res.SetType("Steepest Ascent Hill Climbing")
 	res.AddSolutionItem(0, currentScore, currentCube.GetCurrentState())
-	
+
 	i := 1
 
 	for {

@@ -11,6 +11,7 @@ func HillClimbingSideways(maxIter int) class.Solution {
 	currentScore := currentCube.GetCurrentScore()
 
 	res := class.NewSolution()
+	res.SetType("Hill Climbing with Sideways Move")
 	res.AddSolutionItem(0, currentScore, currentCube.GetCurrentState())
 
 	i := 1
