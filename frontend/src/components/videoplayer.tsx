@@ -3,6 +3,7 @@ import Component from './parameteried-cube';
 import { Solution } from "@/types/solution";
 import Draggable from "react-draggable";
 import { exportSolutionToFile,loadSolutionFromFile } from '@/types/loader';
+import { Button } from "@/components/ui/button";
 
 
 interface VideoPlayerProps {
@@ -133,6 +134,25 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ states }) => {
         </div>
         
         </div>
+      </Draggable>
+      <Draggable>
+        <div className="absolute left-4 top-1/4 p-4 flex flex-col flex-wrap gap-4 max-w-[400px] bg-white rounded-lg cursor-grab">
+            <div className="flex gap-2 m-auto items-center">
+              <h2 className="text-2xl font-bold">Initial/Final State</h2>
+            </div>
+            <Button 
+              onClick={()=>setCurrentFrame(0)}
+              className={currentFrame === 0 ? "bg-blue-500" : ""}
+            >
+              Initial State
+            </Button>
+            <Button 
+              onClick={()=>setCurrentFrame(data ? data.solutions.length - 1 : 0)}
+              className={currentFrame === (data ? data.solutions.length - 1 : 0) ? "bg-blue-500" : ""}
+            >
+              Final State
+            </Button>
+        </div> 
       </Draggable>
     </div>
   );
