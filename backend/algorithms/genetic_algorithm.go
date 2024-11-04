@@ -256,6 +256,8 @@ func GeneticAlgorithm(populationNum int, iteration int) class.Solution {
 	population := NewPopulation(populationNum)
 	population.GeneratePopulation()
 
+	timeStart := time.Now()
+
 	res := class.NewSolution()
 	res.SetType("Genetic Algorithm")
 	res.AddSolutionItem(0, population.GetBestCube().GetCurrentScore(), population.GetBestCube().GetCurrentState())
@@ -268,6 +270,13 @@ func GeneticAlgorithm(populationNum int, iteration int) class.Solution {
 		res.AddSolutionItem(i, population.GetBestCube().GetCurrentScore(), population.GetBestCube().GetCurrentState())
 		res.AddAdditionalInfo(strconv.Itoa(i), float64(population.GetAvgScore()))
 	}
+
+	// Add additional info
+	elapsedTime := time.Since(timeStart).Milliseconds()
+	res.AddElapsedTime(float64(elapsedTime))
+	res.AddLastScore(population.GetBestCube().GetCurrentScore())
+	res.AddAdditionalInfo("Iteration count", float64(iteration))
+	res.AddAdditionalInfo("Population count", float64(populationNum))
 
 	return *res
 }

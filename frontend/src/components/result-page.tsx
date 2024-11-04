@@ -26,11 +26,11 @@ export default function ResultsPage() {
     <div className="flex flex-col justify-center mt-8 p-4 w-screen">
       {data && (
         <>
-          {data.additionalInfo.length > 0 && data.type !== "Genetic Algorithm" && (
+          {data.additionalInfo.length > 0 && (
             <AdditionalInformation
               {...{
                 title: "Additional Information",
-                additionalInfo: data.additionalInfo,
+                additionalInfo: data.additionalInfo.slice(-4),
               }}
             />
           )}
@@ -56,7 +56,7 @@ export default function ResultsPage() {
             <Chart
               {...{
                 label: "Average population score",
-                chartData: data.additionalInfo.map((item) => ({
+                chartData: data.additionalInfo.slice(0, -4).map((item) => ({
                   iteration: parseInt(item.itemName),
                   score: item.itemValue,
                 })),
