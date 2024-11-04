@@ -26,7 +26,7 @@ export default function ResultsPage() {
     <div className="flex flex-col justify-center mt-8 p-4 w-screen">
       {data && (
         <>
-          {data.additionalInfo.length > 0 && (
+          {data.additionalInfo.length > 0 && data.type !== "Genetic Algorithm" && (
             <AdditionalInformation
               {...{
                 title: "Additional Information",
@@ -35,9 +35,9 @@ export default function ResultsPage() {
             />
           )}
           <Chart
-            label="Score"
+            label={data.type === "Genetic Algorithm" ? "Score for fittest individual" : "Score"}
             chartData={chartData}
-            title="Score changes over iterations"
+            title={data.type === "Genetic Algorithm" ? "Fittest individual score changes over iterations" : "Score changes over iterations"}
           />
           {data.type === "Simulated Annealing" && (
             <Chart
@@ -48,6 +48,19 @@ export default function ResultsPage() {
                   score: item.probability,
                 })),
                 title: "Probability changes over iterations",
+              }}
+            />
+          )}
+
+          {data.type === "Genetic Algorithm" && (
+            <Chart
+              {...{
+                label: "Average population score",
+                chartData: data.additionalInfo.map((item) => ({
+                  iteration: parseInt(item.itemName),
+                  score: item.itemValue,
+                })),
+                title: "Average population score changes over iterations",
               }}
             />
           )}

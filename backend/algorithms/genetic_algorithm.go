@@ -5,6 +5,7 @@ package algorithms
 import (
 	"be/class"
 	"math"
+	"strconv"
 	"time"
 
 	"math/rand"
@@ -258,12 +259,14 @@ func GeneticAlgorithm(populationNum int, iteration int) class.Solution {
 	res := class.NewSolution()
 	res.SetType("Genetic Algorithm")
 	res.AddSolutionItem(0, population.GetBestCube().GetCurrentScore(), population.GetBestCube().GetCurrentState())
+	res.AddAdditionalInfo(strconv.Itoa(0), float64(population.GetAvgScore()))
 
 	for i := 1; i <= iteration; i++ {
 		newPopulation := population.BreedPopulation()
 
 		population = newPopulation
 		res.AddSolutionItem(i, population.GetBestCube().GetCurrentScore(), population.GetBestCube().GetCurrentState())
+		res.AddAdditionalInfo(strconv.Itoa(i), float64(population.GetAvgScore()))
 	}
 
 	return *res
