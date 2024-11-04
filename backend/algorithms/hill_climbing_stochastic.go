@@ -18,7 +18,7 @@ func HillClimbingStochastic(maxIter int) class.Solution {
 
 	i := 1
 
-	for i+1 != maxIter {
+	for i <= maxIter {
 		randomSuccessor := currentCube.GetRandomSuccessor()
 		randomSuccessorScore := randomSuccessor.GetCurrentScore()
 
