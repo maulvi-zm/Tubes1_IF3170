@@ -22,12 +22,11 @@ const Chart: React.FC<ChartProps> = ({ title, additionalInfo }) => {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height="100%">
-          <div>
+          <div className="grid grid-cols-2  gap-4">
             {additionalInfo.map((item) => (
-              <div key={item.itemName}>
-                <p>
-                  {item.itemName}: {item.itemValue}
-                </p>
+              <div key={item.itemName} className="flex gap-2 items-center">
+                <p className="font-bold">{item.itemName}:</p>
+                <p>{item.itemValue}</p>
               </div>
             ))}
           </div>

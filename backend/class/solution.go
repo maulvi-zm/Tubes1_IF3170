@@ -11,27 +11,24 @@ type SolutionItem struct {
 	Probability float64 `json:"probability"`
 }
 
-type addtitionalInfor struct {
+type additionalInfor struct {
 	// Additional info for genetic algorithm
-	MaxScore int `json:"maxScore"`
-	AvgScore int `json:"avgScore"`
+	ItemName  string  `json:"itemName"`
+	ItemValue float64 `json:"itemValue"`
 }
 
 type Solution struct {
-	Type           string             `json:"type"`
-	Solution       []SolutionItem     `json:"solutions"`
-	AdditionalInfo []addtitionalInfor `json:"additionalInfo"`
+	Type           string            `json:"type"`
+	Solution       []SolutionItem    `json:"solutions"`
+	AdditionalInfo []additionalInfor `json:"additionalInfo"`
 }
 
 func NewSolution() *Solution {
-	return &Solution{Solution: make([]SolutionItem, 0), Type: "default", AdditionalInfo: make([]addtitionalInfor, 0)}
+	return &Solution{Solution: make([]SolutionItem, 0), Type: "default", AdditionalInfo: make([]additionalInfor, 0)}
 }
 
-func (s *Solution) AddAdditionalInfo(maxScore int, avgScore int) {
-	s.AdditionalInfo = append(s.AdditionalInfo, addtitionalInfor{
-		MaxScore: maxScore,
-		AvgScore: avgScore,
-	})
+func (s *Solution) AddAdditionalInfo(itemName string, itemValue float64) {
+	s.AdditionalInfo = append(s.AdditionalInfo, additionalInfor{itemName, itemValue})
 }
 
 func (s *Solution) SetType(solutionType string) {
@@ -56,4 +53,12 @@ func (s *Solution) ConvertToJson() (string, error) {
 		return "", err
 	}
 	return string(jsonData), nil
+}
+
+func (s *Solution) AddElapsedTime(totalTime float64) {
+	s.AdditionalInfo = append(s.AdditionalInfo, additionalInfor{"Search Duration", float64(totalTime)})
+}
+
+func (s *Solution) AddLastScore(lastScore int) {
+	s.AdditionalInfo = append(s.AdditionalInfo, additionalInfor{"Last Objective Function", float64(lastScore)})
 }
