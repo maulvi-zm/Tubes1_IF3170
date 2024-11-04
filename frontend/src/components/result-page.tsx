@@ -30,7 +30,7 @@ export default function ResultsPage() {
             <AdditionalInformation
               {...{
                 title: "Additional Information",
-                additionalInfo: data.additionalInfo.slice(-4),
+                additionalInfo: data.type === "Genetic Algorithm" ? data.additionalInfo.slice(-4) : data.additionalInfo,
               }}
             />
           )}
