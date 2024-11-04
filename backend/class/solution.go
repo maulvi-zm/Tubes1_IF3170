@@ -2,6 +2,7 @@ package class
 
 import (
 	"encoding/json"
+	"strconv"
 )
 
 type SolutionItem struct {
@@ -61,4 +62,14 @@ func (s *Solution) AddElapsedTime(totalTime float64) {
 
 func (s *Solution) AddLastScore(lastScore int) {
 	s.AdditionalInfo = append(s.AdditionalInfo, additionalInfor{"Last Objective Function", float64(lastScore)})
+}
+func (s *Solution) AddIterasiRestart(iterasi int, maxIter int) {
+	s.AdditionalInfo = append(s.AdditionalInfo, additionalInfor{"Banyak iterasi restart-"+strconv.Itoa(maxIter), float64(iterasi)})
+}
+func (s *Solution) AddTotalRestart(maxIter int) {
+	s.AdditionalInfo = append(s.AdditionalInfo, additionalInfor{"Banyak restart", float64(maxIter)})
+}
+func (s *Solution) AddMaxRestart(maxRestart int) {
+	s.AdditionalInfo = append(s.AdditionalInfo, additionalInfor{"Banyak maximal restart", float64(maxRestart)})
+
 }
